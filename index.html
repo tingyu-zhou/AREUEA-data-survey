@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Survey Responses</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+</head>
+<body>
+
+<h2>Survey Responses</h2>
+<table id="responses" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>Timestamp</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Feedback</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script>
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAbwt4f-tmSwhqUKrf2mRGF8tfp_AVjr40wJsQvAaORrCipEbjOHHTUBHyB8kPtVtW-qdA9KUobU5k/pub?output=csv";  // Replace this with your actual link
+
+  fetch(sheetURL)
+    .then(response => response.text())
+    .then(data => {
+      const rows = data.trim().split('\n').slice(1);
+      const tableData = rows.map(row => {
+        const cells = row.split(',');
+        return `<tr>
+          <td>${cells[0]}</td>
+          <td>${cells[1]}</td>
+          <td>${cells[2]}</td>
+          <td>${cells[3]}</td>
+        </tr>`;
+      }).join('');
+      document.querySelector("#responses tbody").innerHTML = tableData;
+      new DataTable('#responses');
+    });
+</script>
+
+</body>
+</html>
